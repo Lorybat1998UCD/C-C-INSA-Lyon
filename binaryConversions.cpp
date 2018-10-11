@@ -4,48 +4,61 @@
 #include <iostream>
 #include <stack>
 #include <string>
+#include <sstream>
 
 using namespace std;
 stack<int> euclideanDivision(int &val, stack<int> &v);
+int binaryToDecimal(long long binary);
 
 int main()
 {
 	stack<int> v;
-    cout << "Hello! Welcome to the binary/decimal converter!" << endl <<"To get started, select " <<
-		endl <<"1. for binary to decimal, or "<< endl << "2. for decimal to binary)"; 
-	string valstring;
+	cout << "Hello! Welcome to the binary/decimal converter!" << endl << "To get started, select " <<
+		endl << "   1. for binary to decimal, or " << endl << "   2. for decimal to binary" << endl << endl;
 	int choice, val;
 	cin >> choice;
 
 	if (choice == 1) {
-		cout << "Enter the binary  number below" << endl;
-		getline(std::cin, valstring);
+		long long n;
 
-		int decimal = 0;
-		for (int i = 0; i < valstring.length; i++) {
-			if (valstring.at(i) == '1')
-				decimal = decimal * 2 + 1;
-			else if (valstring.at(i) == '0')
-				decimal = decimal * 2;
-			else break;
-		}
-		cout << "Decimal equivalent :" << decimal;
+		cout << "Enter a binary number: ";
+		cin >> n;
+
+		cout << "Decimal equivalent:  " << binaryToDecimal(n);
+		return 0;
 	}
-
 	else if (choice == 2) {
 		cout << "Enter the decimal number below" << endl;
 		cin >> val;
-				
+
 		stack<int> stack = euclideanDivision(val, v);
-		//recursively divide by 2 and take remainder
+		
+		int i = 1;
 		while (!stack.empty()) {
-			cout << &stack.top;
+
+			cout << stack.top();
 			stack.pop();
+			i++;
 		}
 		cout << endl;
 	}
-}
 
+}
+	 int binaryToDecimal(long long binary)
+	{
+		int decimal = 0, i = 0, remainder;
+		while (binary != 0)
+		{
+			remainder = binary % 10;
+			binary /= 10;
+			decimal += remainder * pow(2, i);
+			++i;
+		}
+		return decimal;
+	}
+	
+
+//recursive division by 2 until we reach base case (val == 1 || val == 0)
 stack<int> euclideanDivision(int &val, stack<int> &v)
 {
 	while (val > 0) {
@@ -55,14 +68,3 @@ stack<int> euclideanDivision(int &val, stack<int> &v)
 	}
 	return v;
 }
-
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
-
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
